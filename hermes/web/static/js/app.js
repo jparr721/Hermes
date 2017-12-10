@@ -1,3 +1,7 @@
+/**
+* This is temporary, and for testing purposes.
+*/
+
 // Brunch automatically concatenates all files in your
 // watched paths. Those paths can be configured at
 // config.paths.watched in "brunch-config.js".
@@ -12,6 +16,7 @@
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
 import "phoenix_html"
+import { Socket, Presence } from "phoenix"
 
 // Import local files
 //
@@ -19,3 +24,49 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+let user = document.getElementById("User").innerText;
+let socket = new Socket("/socket", { params: { user: user }})
+socket.connect();
+
+// Presence
+let presences = {};
+
+let formatTimestamp = (timestamp) => {
+	let date = new Date(timestamp);
+	return date.toLocaleTimeString();
+}
+
+let listBy = (user, { metas: metas }) => {
+	return {
+		user: user,
+		onlineAt: formatTimestamd(metas[0].online_at),
+	}
+}
+
+let userList = document.getElementById("UserList");
+let render = (presences) => {
+	userList.innerHTML = Presence.list(presences, listBy)
+		.map(presence => `
+			<li>
+				${presence.user}
+				<br>
+				<small>online since ${presence.onlineAt}</small>
+			</li>
+		`)
+		.join("");
+}
+
+// Channel
+let room = socket.channel("room:lobby");
+room.on("presence_state", state => {
+	presences = Presence.syncState(presences, state);
+	render(presences)
+});
+
+room.on("presence_diff", diff => {
+	presences = Presence.syncDiff(presences, diff);
+	render(presences);
+});
+
+room.join();
