@@ -18,3 +18,4 @@ Extensible chat client
 
 
 Now you can visit [`localhost:4000`](http://localhost:4000) to see it in action.
+To make this app work with individual sessions, add `?user=*name here*` to the URL.

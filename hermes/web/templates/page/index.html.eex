@@ -2,7 +2,8 @@
   <div class="col-12 alert alert-info">
     Hello, <span id="User"><%= @conn.params["user"]%></span>
   </div>
-
+</div>
+<div class="row">
   <div class="col-8">
     <h2>Messages</h2>
     <input type="text" id="NewMessage" placeholder="Type and press enter..." class="form-control">
@@ -16,3 +17,4 @@
     </ul>
   </div>
 </div>
+
