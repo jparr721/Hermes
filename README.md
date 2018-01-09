@@ -15,7 +15,7 @@ Extensible chat client
   * Install Node.js dependencies with `npm install`
   * Start with `mix phx.server`
 
-
+Current todo is to get it integrated with golang and to see if that is even a viable option.
 
 Now you can visit [`localhost:4000`](http://localhost:4000) to see it in action.
 To make this app work with individual sessions, add `?user=*name here*` to the URL.
